@@ -6,9 +6,21 @@ const connectDB = require("./config/db");
 
 const app = express();
 
+const allowedOrigins = [
+  "https://to-do-list-nine-opal-65.vercel.app",
+  "https://to-do-list-dvkdsgevu-lim-5097.vercel.app",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   })
 );
