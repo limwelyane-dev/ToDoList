@@ -8,14 +8,20 @@ const app = express();
 
 const allowedOrigins = [
   "https://to-do-list-nine-opal-65.vercel.app",
-  "https://to-do-list-dvkdsgevu-lim-5097.vercel.app",
   "http://localhost:5173",
 ];
+
+const vercelPreviewPattern =
+  /^https:\/\/to-do-list-[a-z0-9]+-lim-5097\.vercel\.app$/;
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        vercelPreviewPattern.test(origin)
+      ) {
         return callback(null, true);
       }
 
